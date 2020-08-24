@@ -10,7 +10,7 @@ public class ObstacleBehaviour : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Check if it is the player (ball)
+        // Check if it is the player (ball)
         if (collision.gameObject.GetComponent<PlayerBehaviour>())
         {
             Destroy(collision.gameObject);
@@ -23,7 +23,7 @@ public class ObstacleBehaviour : MonoBehaviour
     /// </summary>
     void GameReset()
     {
-        //Actually restart the level
+        // Actually restart the level
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

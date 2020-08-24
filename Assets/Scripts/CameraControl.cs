@@ -22,10 +22,10 @@ public class CameraControl : MonoBehaviour
         
         if (target != null)
         {
-            //Change the camera position
+            // Change the camera position to the Player, adding offset to it
             transform.position = target.position + offset;
 
-            //Change the camera rotation
+            // Change the camera rotation
             transform.LookAt(target);
         }
 

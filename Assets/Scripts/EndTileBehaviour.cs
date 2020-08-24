@@ -21,14 +21,14 @@ public class EndTileBehaviour : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Check if it was the ball/player that pass through the Basic Tile ending
+        // Check if it was the Player that pass through the Basic Tile ending
         if (other.GetComponent<PlayerBehaviour>())
         {
-            //As it was the ball/player, lets create a Basic Tile at the next point
-            //But this next point is after the last Basic Tile present on the scene
+            // As it was the Player, lets create a Basic Tile at the next point
+            // But this next point is after the last Basic Tile present on the scene
             GameObject.FindObjectOfType<GameController>().SpawnNextTile();
 
-            //And now the Basic Tile is destroyed
+            // And now one of the Basic Tile is destroyed
             Destroy(transform.parent.gameObject, destructTime);
         }
 
