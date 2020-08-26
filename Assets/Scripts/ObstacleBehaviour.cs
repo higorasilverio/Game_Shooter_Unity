@@ -8,9 +8,10 @@ public class ObstacleBehaviour : MonoBehaviour
     [Tooltip("How mach time before restart the game?")]
     public float waitTime = 2.0f;
 
+    
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if it is the player (ball)
+        // Check if it is the player
         if (collision.gameObject.GetComponent<PlayerBehaviour>())
         {
             Destroy(collision.gameObject);

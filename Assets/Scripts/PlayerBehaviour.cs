@@ -34,6 +34,7 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         // Receives the GO Player position
         playerPosition = transform.position;
 
@@ -50,7 +51,36 @@ public class PlayerBehaviour : MonoBehaviour
 
         // Atributtes the current position to Player
         transform.position = playerPosition;
+
+        // Verify if the space bar is been pressed to call the Dash Power method
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!IsInvoking("DashPower"))
+            {
+                Invoke("DashPower", 0f);
+                CancelInvoke("DashEnd");
+            }
+        }
+        // When released, the space bar should cancel the Dash Power
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            CancelInvoke("DashPower");
+            Invoke("DashEnd", 0f);
+        }
     }
+
+    // Dash Power method
+    void DashPower()
+    {
+        speed = speed * 15;
+    }
+
+    // Dash Power cancel method, setting the speed to its initial value
+    void DashEnd()
+    {
+        speed = speed / 15;
+    }
+
 }
 
 

@@ -7,6 +7,9 @@ public class EndTileBehaviour : MonoBehaviour
     [Tooltip("Time to destruct the Basic Tile")]
     public float destructTime = 2.0f;
 
+    [Tooltip("Variable in charge of monitoring the travelled distance")]
+    public static int distanceControl = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +33,11 @@ public class EndTileBehaviour : MonoBehaviour
 
             // And now one of the Basic Tile is destroyed
             Destroy(transform.parent.gameObject, destructTime);
+
+            // Increments the distance already travelled
+            distanceControl++;
+            print(distanceControl);
+
         }
 
 

@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
         if (!spawnObstacles)
             return;
 
-        // Search for all posibe locations for obstacles
+        // Search for all posible locations for obstacles
         var obstaclePoints = new List<GameObject>();
 
         foreach (Transform son in newTile)
