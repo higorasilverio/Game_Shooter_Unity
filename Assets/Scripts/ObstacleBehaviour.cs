@@ -14,6 +14,7 @@ public class ObstacleBehaviour : MonoBehaviour
         // Check if it is the player
         if (collision.gameObject.GetComponent<PlayerBehaviour>())
         {
+            //Destroy the player object
             Destroy(collision.gameObject);
             Invoke("GameReset", waitTime);
         }
@@ -24,8 +25,10 @@ public class ObstacleBehaviour : MonoBehaviour
     /// </summary>
     void GameReset()
     {
-        // Actually restart the level
+        // Actually restart the level and its global variables
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        EndTileBehaviour.distanceControl = 0;
+        PlayerBehaviour.dashControl = true;
     }
 
     // Start is called before the first frame update

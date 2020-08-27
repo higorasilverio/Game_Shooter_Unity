@@ -36,8 +36,6 @@ public class EndTileBehaviour : MonoBehaviour
 
             // Increments the distance already travelled
             distanceControl++;
-            print(distanceControl);
-
         }
 
 
