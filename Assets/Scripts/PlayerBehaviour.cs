@@ -38,6 +38,22 @@ public class PlayerBehaviour : MonoBehaviour
     /// </summary>
     private bool powerWereUsed = false;
 
+    [Header("Swipe Attributes")]
+
+    [Tooltip("Minimal finger distance for swipe detection")]
+    public float swipeMinimalDistance = 2.0f;
+
+    [Tooltip("Swipe movement total distance")]
+    public float swipeMovement = 2.0f;
+
+    /// <summary>
+    /// Initial touch point to start the swipe movement
+    /// </summary>
+    private Vector2 initialTouch;
+
+    [Tooltip("Variable that tells if the player can destruy an obstacle")]
+    public static bool indestructible = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,8 +76,23 @@ public class PlayerBehaviour : MonoBehaviour
         // It avoid the moviment to outside the road, given the transform.position
         if (playerPosition.x >= -3 && playerPosition.x <= 3)
         {
+#if UNITY_STANDALONE || UNITY_EDITOR || UNITY_WEBPLAYER
             // Moves the player side to side, based on the arrow key pressed
             playerPosition.x += (dodgeSpeed / 20) * Input.GetAxis("Horizontal");
+            // Moves the player side to side, based on the side its reallife player press with its mouse
+            if (Input.GetMouseButton(0))
+            {
+                playerPosition.x += MotionCalculation(Input.mousePosition);
+            }
+#elif UNITY_IOS || UNITY_ANDROID
+            // Moves the player side to side, based on the side its reallife player press in the screen
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.touches[0];
+                playerPosition.x += MotionCalculation(touch.position);
+                SwipeTeleport(touch);
+            }
+#endif
         }
 
         // Atributtes the current position to Player
@@ -84,17 +115,68 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    // Dash Power method
-    void DashPower()
+    /// <summary>
+    /// Method used to determinate the movement direction
+    /// </summary>
+    /// <param name="screenSpaceCoord"></param>
+    /// <returns></returns>
+    private float MotionCalculation(Vector2 screenSpaceCoord)
     {
+        float xDirection = 0.0f;
+        var cameraPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        if (cameraPosition.x < 0.5f) xDirection = -1.0f;
+        else xDirection = 1.0f;
+        return (dodgeSpeed / 20) * (xDirection / 1.5f);
+    }
+
+    /// <summary>
+    /// Method used to verify and apply a swipe to player
+    /// </summary>
+    /// <param name="touch"> Parameter received by the method that validate the swipe and its direction </param>
+    private void SwipeTeleport(Touch touch)
+    {
+        // Verify the swipe begining
+        if (touch.phase == TouchPhase.Began) initialTouch = touch.position;
+        // Verify the swipe ending
+        else if (touch.phase == TouchPhase.Ended)
+        {
+            Vector2 endTouch = touch.position;
+            Vector3 movementDirection;
+            //Calculate the difference between the initial and final position of the swipe movement
+            float difference = endTouch.x - initialTouch.x;
+            // If the swipe distance is long enough
+            if (Mathf.Abs(difference) >= swipeMinimalDistance)
+            {
+                // Determinates the swipe direction
+                if (difference < 0) movementDirection = Vector3.left;
+                else movementDirection = Vector3.right;
+            }
+            else return;
+            // Using a Raycast varible to determinates some side collision
+            RaycastHit hit;
+            // If there is no side collision, the swipe is actually performed
+            if (!rb.SweepTest(movementDirection, out hit, swipeMovement)) rb.MovePosition(rb.position + (movementDirection * swipeMovement));
+        }
+    }
+
+    private static void ObjectDashedIn()
+    {
+        //GameObject.Find("Player").SendMessage("DestroyObject", SendMessageOptions.DontRequireReceiver);
+    }
+
+    // Dash Power method
+    private void DashPower()
+    {
+        indestructible = true;
         speed = speed * 15;
         StartCoroutine(Countdown(dashTimerCountdown));
         powerWereUsed = true;
     }
 
     // Dash Power cancel method, setting the speed to its initial value
-    void DashEnd()
+    private void DashEnd()
     {
+        indestructible = false;
         speed = speed / 15;
         powerWereUsed = false;
     }
@@ -105,6 +187,11 @@ public class PlayerBehaviour : MonoBehaviour
         dashControl = false;
         yield return new WaitForSeconds(dashTimerCountdown);
         dashControl = true;
+    }
+
+    public void Shine()
+    {
+        print("OK");
     }
 
 }

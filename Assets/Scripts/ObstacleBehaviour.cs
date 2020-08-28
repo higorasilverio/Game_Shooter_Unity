@@ -14,9 +14,17 @@ public class ObstacleBehaviour : MonoBehaviour
         // Check if it is the player
         if (collision.gameObject.GetComponent<PlayerBehaviour>())
         {
-            //Destroy the player object
-            Destroy(collision.gameObject);
-            Invoke("GameReset", waitTime);
+
+            if (PlayerBehaviour.indestructible)
+            {
+                GameObject.Find("Player").SendMessage("Shine", SendMessageOptions.DontRequireReceiver);
+            }
+            else
+            {
+                //Destroy the player object
+                Destroy(collision.gameObject);
+                Invoke("GameReset", waitTime);
+            }
         }
     }
 
@@ -29,6 +37,7 @@ public class ObstacleBehaviour : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         EndTileBehaviour.distanceControl = 0;
         PlayerBehaviour.dashControl = true;
+        PlayerBehaviour.indestructible = false;
     }
 
     // Start is called before the first frame update
