@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class ObstacleBehaviour : MonoBehaviour
 {
+
     [Tooltip("How mach time before restart the game?")]
     public float waitTime = 2.0f;
 
@@ -17,7 +18,7 @@ public class ObstacleBehaviour : MonoBehaviour
 
             if (PlayerBehaviour.indestructible)
             {
-                GameObject.Find("Player").SendMessage("Shine", SendMessageOptions.DontRequireReceiver);
+                DestroyObject();
             }
             else
             {
@@ -50,5 +51,10 @@ public class ObstacleBehaviour : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 }

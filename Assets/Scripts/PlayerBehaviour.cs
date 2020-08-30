@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -168,6 +169,7 @@ public class PlayerBehaviour : MonoBehaviour
     private void DashPower()
     {
         indestructible = true;
+        GameObject.Find("Player").GetComponent<Renderer>().material.color = new Color(255f / 255f, 255f / 255f, 10f / 255f);
         speed = speed * 15;
         StartCoroutine(Countdown(dashTimerCountdown));
         powerWereUsed = true;
@@ -177,6 +179,7 @@ public class PlayerBehaviour : MonoBehaviour
     private void DashEnd()
     {
         indestructible = false;
+        GameObject.Find("Player").GetComponent<Renderer>().material.color = new Color(10f / 255f, 10f / 255f, 200f / 255f);
         speed = speed / 15;
         powerWereUsed = false;
     }
@@ -187,11 +190,6 @@ public class PlayerBehaviour : MonoBehaviour
         dashControl = false;
         yield return new WaitForSeconds(dashTimerCountdown);
         dashControl = true;
-    }
-
-    public void Shine()
-    {
-        print("OK");
     }
 
 }
