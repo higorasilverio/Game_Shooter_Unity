@@ -153,6 +153,8 @@ MonoBehaviour:
   tile: {fileID: 8799691224609817005, guid: f2d4d4843f915a042b63e82da1c76886, type: 3}
   obstacle: {fileID: 5956491702667076209, guid: 11bff6e57aa90d448ae370a4d46025cd,
     type: 3}
+  coin: {fileID: 3624672349689396758, guid: 07f4deaeefbcb9941bede18bee304454, type: 3}
+  coinOfset: {x: 0, y: 0, z: -5}
   initialpoint: {x: 0, y: 0, z: -5}
   initialTilesNumber: 20
   initialTilesWithoutObs: 4
@@ -359,7 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1831381857}
-  offset: {x: 0, y: 3, z: -6}
+  offset: {x: 0, y: 5, z: -10}
 --- !u!1 &1593023985
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,7 +388,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593023985}
   m_LocalRotation: {x: 0.9961947, y: -0, z: -0, w: -0.08715578}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1831381857}
@@ -411,7 +413,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c50d77affeb31e14c9c062c282f13fc8, type: 2}
+  - {fileID: 2100000, guid: 05f5681a0ed18fb42b0d2197613ee699, type: 2}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -1170,7 +1172,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.05
+      value: 0.5
       mode: 0
       spread: 0
       speed:

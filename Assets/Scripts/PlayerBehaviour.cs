@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -22,7 +23,7 @@ public class PlayerBehaviour : MonoBehaviour
     /// <summary>
     /// This variable is used to add moviment to the player by its position
     /// </summary>
-    private Vector3 playerPosition;
+    private UnityEngine.Vector3 playerPosition;
 
     /// <summary>
     /// Variable to control if player can use dash
@@ -50,7 +51,7 @@ public class PlayerBehaviour : MonoBehaviour
     /// <summary>
     /// Initial touch point to start the swipe movement
     /// </summary>
-    private Vector2 initialTouch;
+    private UnityEngine.Vector2 initialTouch;
 
     [Tooltip("Variable that tells if the player can destruy an obstacle")]
     public static bool indestructible = false;
@@ -77,23 +78,14 @@ public class PlayerBehaviour : MonoBehaviour
         // It avoid the moviment to outside the road, given the transform.position
         if (playerPosition.x >= -3 && playerPosition.x <= 3)
         {
-#if UNITY_STANDALONE || UNITY_EDITOR || UNITY_WEBPLAYER
             // Moves the player side to side, based on the arrow key pressed
             playerPosition.x += (dodgeSpeed / 20) * Input.GetAxis("Horizontal");
             // Moves the player side to side, based on the side its reallife player press with its mouse
             if (Input.GetMouseButton(0))
             {
+                TouchCoin(Input.mousePosition);
                 playerPosition.x += MotionCalculation(Input.mousePosition);
             }
-#elif UNITY_IOS || UNITY_ANDROID
-            // Moves the player side to side, based on the side its reallife player press in the screen
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.touches[0];
-                playerPosition.x += MotionCalculation(touch.position);
-                SwipeTeleport(touch);
-            }
-#endif
         }
 
         // Atributtes the current position to Player
@@ -114,6 +106,8 @@ public class PlayerBehaviour : MonoBehaviour
             CancelInvoke("DashPower");
             Invoke("DashEnd", 0f);
         }
+
+        
     }
 
     /// <summary>
@@ -121,7 +115,7 @@ public class PlayerBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="screenSpaceCoord"></param>
     /// <returns></returns>
-    private float MotionCalculation(Vector2 screenSpaceCoord)
+    private float MotionCalculation(UnityEngine.Vector2 screenSpaceCoord)
     {
         float xDirection = 0.0f;
         var cameraPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
@@ -141,16 +135,16 @@ public class PlayerBehaviour : MonoBehaviour
         // Verify the swipe ending
         else if (touch.phase == TouchPhase.Ended)
         {
-            Vector2 endTouch = touch.position;
-            Vector3 movementDirection;
+            UnityEngine.Vector2 endTouch = touch.position;
+            UnityEngine.Vector3 movementDirection;
             //Calculate the difference between the initial and final position of the swipe movement
             float difference = endTouch.x - initialTouch.x;
             // If the swipe distance is long enough
             if (Mathf.Abs(difference) >= swipeMinimalDistance)
             {
                 // Determinates the swipe direction
-                if (difference < 0) movementDirection = Vector3.left;
-                else movementDirection = Vector3.right;
+                if (difference < 0) movementDirection = UnityEngine.Vector3.left;
+                else movementDirection = UnityEngine.Vector3.right;
             }
             else return;
             // Using a Raycast varible to determinates some side collision
@@ -160,12 +154,9 @@ public class PlayerBehaviour : MonoBehaviour
         }
     }
 
-    private static void ObjectDashedIn()
-    {
-        //GameObject.Find("Player").SendMessage("DestroyObject", SendMessageOptions.DontRequireReceiver);
-    }
-
-    // Dash Power method
+    /// <summary>
+    /// Dash Power method
+    /// </summary>
     private void DashPower()
     {
         indestructible = true;
@@ -173,9 +164,12 @@ public class PlayerBehaviour : MonoBehaviour
         speed = speed * 15;
         StartCoroutine(Countdown(dashTimerCountdown));
         powerWereUsed = true;
+        
     }
 
-    // Dash Power cancel method, setting the speed to its initial value
+    /// <summary>
+    /// Dash Power cancel method, setting the speed to its initial value
+    /// </summary>
     private void DashEnd()
     {
         indestructible = false;
@@ -183,13 +177,31 @@ public class PlayerBehaviour : MonoBehaviour
         speed = speed / 15;
         powerWereUsed = false;
     }
-    
-    // Coroutine used to implement the countdown into the dash power
+
+    /// <summary>
+    /// Coroutine used to implement the countdown into the dash power
+    /// </summary>
+    /// <param name="dashTimerCountdown"> Time between uses </param>
+    /// <returns></returns>
     private IEnumerator Countdown(int dashTimerCountdown)
     {
         dashControl = false;
         yield return new WaitForSeconds(dashTimerCountdown);
         dashControl = true;
+    }
+
+    /// <summary>
+    /// Method used to identify the touch into the coin object
+    /// </summary>
+    /// <param name="touch"> Touch occur on this frame </param>
+    private static void TouchCoin(UnityEngine.Vector3 touch)
+    {
+        // Touch on the screent converted to a Ray variable
+        Ray touchRay = Camera.main.ScreenPointToRay(touch);
+        // Object where we save the information from the coin touched
+        RaycastHit hit;
+        if (Physics.Raycast(touchRay, out hit))
+            hit.transform.SendMessage("CoinTouched", SendMessageOptions.DontRequireReceiver);
     }
 
 }

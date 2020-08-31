@@ -8,7 +8,7 @@ public class CameraControl : MonoBehaviour
     public Transform target;
 
     [Tooltip("Relative distance/position between camera and target")]
-    public Vector3 offset = new Vector3(0, 3, -6);
+    public Vector3 offset = new Vector3(0, 5, -10);
 
     // Start is called before the first frame update
     void Start()

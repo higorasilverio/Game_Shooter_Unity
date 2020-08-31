@@ -9,7 +9,8 @@ public class ObstacleBehaviour : MonoBehaviour
     [Tooltip("How mach time before restart the game?")]
     public float waitTime = 2.0f;
 
-    
+    public static int obstaclesDestroiedCount = 0;
+
     private void OnCollisionEnter(Collision collision)
     {
         // Check if it is the player
@@ -55,6 +56,7 @@ public class ObstacleBehaviour : MonoBehaviour
 
     public void DestroyObject()
     {
+        obstaclesDestroiedCount++;
         Destroy(gameObject);
     }
 }
