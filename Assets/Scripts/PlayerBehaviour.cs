@@ -78,8 +78,6 @@ public class PlayerBehaviour : MonoBehaviour
         // It avoid the moviment to outside the road, given the transform.position
         if (playerPosition.x >= -3 && playerPosition.x <= 3)
         {
-            // Moves the player side to side, based on the arrow key pressed
-            playerPosition.x += (dodgeSpeed / 20) * Input.GetAxis("Horizontal");
             // Moves the player side to side, based on the side its reallife player press with its mouse
             if (Input.GetMouseButton(0))
             {
@@ -101,13 +99,11 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
         // When released, the space bar should cancel the Dash Power
-        if (Input.GetKeyUp(KeyCode.Space) && !dashControl && powerWereUsed)
+        if ((Input.GetKeyUp(KeyCode.Space) && !dashControl && powerWereUsed) || ObstacleBehaviour.obstaclesDestroiedCount >= 2)
         {
             CancelInvoke("DashPower");
             Invoke("DashEnd", 0f);
         }
-
-        
     }
 
     /// <summary>
@@ -176,6 +172,7 @@ public class PlayerBehaviour : MonoBehaviour
         GameObject.Find("Player").GetComponent<Renderer>().material.color = new Color(10f / 255f, 10f / 255f, 200f / 255f);
         speed = speed / 15;
         powerWereUsed = false;
+        ObstacleBehaviour.obstaclesDestroiedCount = 0;
     }
 
     /// <summary>
