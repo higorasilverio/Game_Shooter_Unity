@@ -69,9 +69,13 @@ public class PlayerBehaviour : MonoBehaviour
             // Moves the player side to side, based on the side its reallife player press with its mouse
             if (Input.GetMouseButton(0))
             {
-                TouchCoin(Input.mousePosition);
                 playerPosition.x += MotionCalculation(Input.mousePosition);
             }
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            TouchCoin(Input.mousePosition);
         }
 
         // Atributtes the current position to Player
