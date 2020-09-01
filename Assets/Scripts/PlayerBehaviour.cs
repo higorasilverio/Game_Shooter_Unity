@@ -7,11 +7,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerBehaviour : MonoBehaviour
 {
-    /// <summary>
-    /// A reference to RigidBody component
-    /// </summary>
-    private Rigidbody rb;
-
     [Tooltip("The speed which the ball/player will dodge")]
     [Range(0, 5)]
     public float dodgeSpeed = 1.0f;
@@ -20,15 +15,24 @@ public class PlayerBehaviour : MonoBehaviour
     [Range(0, 15)]
     public float speed = 5.0f;
 
+    [Tooltip("Variable that tells if the player is able destroy an obstacle")]
+    public static bool indestructible = false;
+
+    [Tooltip("Variable to control the number of obstacles destroyed at the same dash")]
+    public static int dashDestroyControl = 2;
+
+    [Tooltip("Variable to control if player can use dash")]
+    public static bool dashControl = true;
+
+    /// <summary>
+    /// A reference to RigidBody component
+    /// </summary>
+    private Rigidbody rb;
+
     /// <summary>
     /// This variable is used to add moviment to the player by its position
     /// </summary>
     private UnityEngine.Vector3 playerPosition;
-
-    /// <summary>
-    /// Variable to control if player can use dash
-    /// </summary>
-    public static bool dashControl = true;
 
     /// <summary>
     /// Countdown time until the player will be able to use dash again
@@ -39,22 +43,6 @@ public class PlayerBehaviour : MonoBehaviour
     /// Controls if the dash power were used or not
     /// </summary>
     private bool powerWereUsed = false;
-
-    [Header("Swipe Attributes")]
-
-    [Tooltip("Minimal finger distance for swipe detection")]
-    public float swipeMinimalDistance = 2.0f;
-
-    [Tooltip("Swipe movement total distance")]
-    public float swipeMovement = 2.0f;
-
-    /// <summary>
-    /// Initial touch point to start the swipe movement
-    /// </summary>
-    private UnityEngine.Vector2 initialTouch;
-
-    [Tooltip("Variable that tells if the player can destruy an obstacle")]
-    public static bool indestructible = false;
 
     // Start is called before the first frame update
     void Start()
@@ -99,7 +87,7 @@ public class PlayerBehaviour : MonoBehaviour
             }
         }
         // When released, the space bar should cancel the Dash Power
-        if ((Input.GetKeyUp(KeyCode.Space) && !dashControl && powerWereUsed) || ObstacleBehaviour.obstaclesDestroiedCount >= 2)
+        if ((Input.GetKeyUp(KeyCode.Space) && !dashControl && powerWereUsed) || ObstacleBehaviour.obstaclesDestroiedCount >= dashDestroyControl)
         {
             CancelInvoke("DashPower");
             Invoke("DashEnd", 0f);
@@ -118,36 +106,6 @@ public class PlayerBehaviour : MonoBehaviour
         if (cameraPosition.x < 0.5f) xDirection = -1.0f;
         else xDirection = 1.0f;
         return (dodgeSpeed / 20) * (xDirection / 1.5f);
-    }
-
-    /// <summary>
-    /// Method used to verify and apply a swipe to player
-    /// </summary>
-    /// <param name="touch"> Parameter received by the method that validate the swipe and its direction </param>
-    private void SwipeTeleport(Touch touch)
-    {
-        // Verify the swipe begining
-        if (touch.phase == TouchPhase.Began) initialTouch = touch.position;
-        // Verify the swipe ending
-        else if (touch.phase == TouchPhase.Ended)
-        {
-            UnityEngine.Vector2 endTouch = touch.position;
-            UnityEngine.Vector3 movementDirection;
-            //Calculate the difference between the initial and final position of the swipe movement
-            float difference = endTouch.x - initialTouch.x;
-            // If the swipe distance is long enough
-            if (Mathf.Abs(difference) >= swipeMinimalDistance)
-            {
-                // Determinates the swipe direction
-                if (difference < 0) movementDirection = UnityEngine.Vector3.left;
-                else movementDirection = UnityEngine.Vector3.right;
-            }
-            else return;
-            // Using a Raycast varible to determinates some side collision
-            RaycastHit hit;
-            // If there is no side collision, the swipe is actually performed
-            if (!rb.SweepTest(movementDirection, out hit, swipeMovement)) rb.MovePosition(rb.position + (movementDirection * swipeMovement));
-        }
     }
 
     /// <summary>

@@ -51,6 +51,12 @@ public class GameController : MonoBehaviour
 
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
     public void SpawnNextTile(bool spawnObstacles = true)
     {
         var newTile = Instantiate(tile, nextTilePosition, nextTileRotation);
@@ -124,9 +130,4 @@ public class GameController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //print(EndTileBehaviour.distanceControl);
-    }
 }
