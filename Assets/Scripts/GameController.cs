@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Advertisements;
 
 public class GameController : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Advertisement.Initialize("2586157");
+
         // Preparing the initial point
         nextTilePosition = initialpoint;
         nextTileRotation = Quaternion.identity;
@@ -48,12 +51,6 @@ public class GameController : MonoBehaviour
         {
             SpawnNextTile(i >= initialTilesWithoutObs);
         }
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
 
     }
 

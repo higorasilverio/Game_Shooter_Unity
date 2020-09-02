@@ -11,6 +11,10 @@ public class MainMenu : MonoBehaviour
     /// <param name="sceneName"></param>
     public void LoadGameScene (string sceneName)
     {
+        if (AdsControl.showAds)
+        {
+            AdsControl.ShowAd();
+        }
         SceneManager.LoadScene(sceneName);
     }
 

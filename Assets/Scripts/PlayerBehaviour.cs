@@ -56,6 +56,9 @@ public class PlayerBehaviour : MonoBehaviour
     void Update()
     {
 
+        if (PauseMenu.paused)
+            return;
+
         // Receives the GO Player position
         playerPosition = transform.position;
 

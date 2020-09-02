@@ -10,18 +10,6 @@ public class EndTileBehaviour : MonoBehaviour
     [Tooltip("Variable in charge of monitoring the travelled distance")]
     public static int distanceControl = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         // Check if it was the Player that pass through the Basic Tile ending
