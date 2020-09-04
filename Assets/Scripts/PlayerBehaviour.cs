@@ -9,7 +9,7 @@ public class PlayerBehaviour : MonoBehaviour
 {
     [Tooltip("The speed which the ball/player will dodge")]
     [Range(0, 5)]
-    public float dodgeSpeed = 1.0f;
+    public float dodgeSpeed = 3.0f;
 
     [Tooltip("The speed which the ball/player will move forward")]
     [Range(0, 15)]

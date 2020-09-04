@@ -108,3 +108,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waitTime: 2
+  clip: {fileID: 8300000, guid: 78accc32280e32b499beeb0f7cfb2bf2, type: 3}

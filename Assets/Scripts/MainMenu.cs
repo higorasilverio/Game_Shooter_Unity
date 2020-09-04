@@ -15,6 +15,9 @@ public class MainMenu : MonoBehaviour
         {
             AdsControl.ShowAd();
         }
+        EndTileBehaviour.distanceControl = 0;
+        PlayerBehaviour.dashControl = true;
+        PlayerBehaviour.indestructible = false;
         SceneManager.LoadScene(sceneName);
     }
 

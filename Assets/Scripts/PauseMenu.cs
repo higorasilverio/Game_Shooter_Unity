@@ -27,6 +27,8 @@ public class PauseMenu : MonoBehaviour
     public void Restart()
     {
         EndTileBehaviour.distanceControl = 0;
+        PlayerBehaviour.dashControl = true;
+        PlayerBehaviour.indestructible = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

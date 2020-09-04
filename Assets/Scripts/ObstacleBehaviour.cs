@@ -15,6 +15,8 @@ public class ObstacleBehaviour : MonoBehaviour
 
     private GameObject player;
 
+    public AudioClip clip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,7 @@ public class ObstacleBehaviour : MonoBehaviour
         // Check if it is the player
         if (collision.gameObject.GetComponent<PlayerBehaviour>())
         {
+            AudioSource.PlayClipAtPoint(clip, collision.transform.position, 1.0f);
             // If its player is using dash power, it is indestructible
             if (PlayerBehaviour.indestructible)
             {
@@ -61,7 +64,7 @@ public class ObstacleBehaviour : MonoBehaviour
 
         foreach (var button in buttons)
         {
-            if (button.gameObject.name.Equals(""))
+            if (button.gameObject.name.Equals("Continue Ad Button"))
             {
                 continueButton = button;
                 break;
@@ -70,6 +73,8 @@ public class ObstacleBehaviour : MonoBehaviour
 
         if (continueButton)
         {
+            PlayerBehaviour.dashControl = true;
+            PlayerBehaviour.indestructible = false;
             StartCoroutine(ShowContinue(continueButton));
 
             //continueButton.onClick.AddListener(AdsControl.ShowRewardAd);
@@ -78,9 +83,6 @@ public class ObstacleBehaviour : MonoBehaviour
 
         // Actually restart the level and its global variables
         //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        //EndTileBehaviour.distanceControl = 0;
-        //PlayerBehaviour.dashControl = true;
-        //PlayerBehaviour.indestructible = false;
     }
 
     public void Continue()

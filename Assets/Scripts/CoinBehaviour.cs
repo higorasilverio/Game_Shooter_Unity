@@ -14,7 +14,10 @@ public class CoinBehaviour : MonoBehaviour
         {
             // Instatite the explosion and, after a second, destroy it
             var particles = Instantiate(explosion, transform.position, Quaternion.identity);
+
             Destroy(particles, 1.0f);
+
+            explosion.GetComponent<AudioSource>().Play();
         }
         // Actually destroy the Coin
         Destroy(gameObject);
