@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6519615886334122814}
   - component: {fileID: 6519615886334122815}
   - component: {fileID: 6519615886334122812}
-  - component: {fileID: 2181201085343848634}
+  - component: {fileID: 430428816800251449}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -4813,7 +4813,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!82 &2181201085343848634
+--- !u!82 &430428816800251449
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

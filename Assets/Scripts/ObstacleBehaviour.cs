@@ -13,35 +13,30 @@ public class ObstacleBehaviour : MonoBehaviour
     [Tooltip("Variable that count the number of obstacles destroyed")]
     public static int obstaclesDestroiedCount = 0;
 
+    /// <summary>
+    /// Reference to the Player Game Object
+    /// </summary>
     private GameObject player;
 
+    /// <summary>
+    /// Reference to the sound used when the Player Game Object hit the Obstacle Game Object
+    /// </summary>
     public AudioClip clip;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-        
+            
     private void OnCollisionEnter(Collision collision)
     {
-        // Check if it is the player
+        // Check if it is the Player that has collided with the Obstacle
         if (collision.gameObject.GetComponent<PlayerBehaviour>())
         {
+            // Calls the AudioClip of the hit
             AudioSource.PlayClipAtPoint(clip, collision.transform.position, 1.0f);
-            // If its player is using dash power, it is indestructible
+            // If its player is using dash power, it is indestructible and the Obstacle is destroyed
             if (PlayerBehaviour.indestructible)
             {
                 DestroyObject();
             }
 
-            // If it is not using dash, the player is killed
+            // If it is not using dash, the player is hidden, to show some options 
             else
             {
                 collision.gameObject.SetActive(false);
@@ -56,7 +51,7 @@ public class ObstacleBehaviour : MonoBehaviour
     /// </summary>
     void GameReset()
     {
-
+        // Selec the button pressed when stopped by a obstacle, shown the Game Over menu
         var menuGameOver = GetMenuGameOver();
         menuGameOver.SetActive(true);
         var buttons = menuGameOver.transform.GetComponentsInChildren<Button>();
@@ -76,15 +71,10 @@ public class ObstacleBehaviour : MonoBehaviour
             PlayerBehaviour.dashControl = true;
             PlayerBehaviour.indestructible = false;
             StartCoroutine(ShowContinue(continueButton));
-
-            //continueButton.onClick.AddListener(AdsControl.ShowRewardAd);
-            //AdsControl.obstacle = this;
         }
-
-        // Actually restart the level and its global variables
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    // If the player hits Continue, it is shown and the game continues
     public void Continue()
     {
         var go = GetMenuGameOver();
@@ -94,6 +84,10 @@ public class ObstacleBehaviour : MonoBehaviour
         obstaclesDestroiedCount--;
     }
 
+    /// <summary>
+    /// Function used to get the Game Over Menu into the Canvas object
+    /// </summary>
+    /// <returns></returns>
     GameObject GetMenuGameOver()
     {
         return GameObject.Find("Canvas").transform.Find("Game Over Menu").gameObject;
@@ -108,6 +102,12 @@ public class ObstacleBehaviour : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Coroutine used to set some time between the uses of the Ad with reward
+    /// and show the Player its cooldown time
+    /// </summary>
+    /// <param name="continueButton"> Reference to the Button Continue show in the Game Over Menu </param>
+    /// <returns></returns>
     public IEnumerator ShowContinue(Button continueButton)
     {
         var btnText = continueButton.GetComponentInChildren<Text>();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class GameController : MonoBehaviour
 
     [Tooltip("Initial tiles quantity")]
     [Range(1, 20)]
-    public int initialTilesNumber = 15;
+    public int initialTilesNumber = 20;
 
     [Tooltip("Quantity of initial tiles without obstacles")]
     [Range(1, 4)]
@@ -41,6 +42,7 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Workaround to use Unity Advertisement in my Unity platform version
         Advertisement.Initialize("2586157");
 
         // Preparing the initial point
@@ -52,6 +54,13 @@ public class GameController : MonoBehaviour
             SpawnNextTile(i >= initialTilesWithoutObs);
         }
 
+    }
+
+    void Update()
+    {
+        // Convert and show the number of coins already own
+        var coins = CoinBehaviour.coinsCatch.ToString();
+        GameObject.Find("Canvas").transform.Find("HUD").transform.Find("Panel Coin").transform.Find("Text").GetComponentInChildren<Text>().text = coins;
     }
 
     public void SpawnNextTile(bool spawnObstacles = true)

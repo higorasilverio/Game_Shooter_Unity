@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class BackgroundSound : MonoBehaviour
 {
+
+    [Tooltip("Reference to the background sound")]
     public static BackgroundSound backgroundSound = null;
 
+    /// <summary>
+    /// Plays the background sound when awaked and does not stop
+    /// </summary>
     private void Awake()
     {
         if (backgroundSound != null)
@@ -23,11 +28,5 @@ public class BackgroundSound : MonoBehaviour
     void Start()
     {
         GameObject.DontDestroyOnLoad(gameObject);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

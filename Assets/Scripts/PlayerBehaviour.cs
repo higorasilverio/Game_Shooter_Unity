@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerBehaviour : MonoBehaviour
@@ -13,7 +14,7 @@ public class PlayerBehaviour : MonoBehaviour
 
     [Tooltip("The speed which the ball/player will move forward")]
     [Range(0, 15)]
-    public float speed = 5.0f;
+    public static float speed = 5.0f;
 
     [Tooltip("Variable that tells if the player is able destroy an obstacle")]
     public static bool indestructible = false;
@@ -37,12 +38,15 @@ public class PlayerBehaviour : MonoBehaviour
     /// <summary>
     /// Countdown time until the player will be able to use dash again
     /// </summary>
-    private int dashTimerCountdown = 5;
+    public static int dashTimerCountdown = 5;
 
     /// <summary>
     /// Controls if the dash power were used or not
     /// </summary>
     private bool powerWereUsed = false;
+
+    [Tooltip ("Varialble used to control the speed increasy using the coins own")]
+    public static int controlSpeedByCoin = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +59,18 @@ public class PlayerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Convert and show the number of obstacle that can be destroyed in a single dash
+        var power = dashDestroyControl.ToString();
+        GameObject.Find("Canvas").transform.Find("HUD").transform.Find("Panel Power").transform.Find("Text").GetComponentInChildren<Text>().text = power;
+        
+        // Actually increse the speed
+        if (controlSpeedByCoin > 9)
+        {
+            speed++;
+            controlSpeedByCoin = 0;
+        }
 
+        // if game is paused, finish the frame update
         if (PauseMenu.paused)
             return;
 
